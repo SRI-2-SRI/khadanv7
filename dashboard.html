@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Management System - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body onload="checkAuth()">
+    <div class="dashboard-container">
+        <header>
+            <h1>Vehicle Management Dashboard</h1>
+            <div class="user-info">
+                <span id="userRole"></span>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="entry-form-section">
+                <h2>New Vehicle Entry</h2>
+                <form id="vehicleForm" onsubmit="return handleVehicleEntry(event)">
+                    <div class="form-group">
+                        <label for="vehicleNumber">Vehicle Number</label>
+                        <input type="text" id="vehicleNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cft">CFT</label>
+                        <input type="number" id="cft" required min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" required>
+                            <option value="CO">CO</option>
+                            <option value="NON-CO">NON-CO</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" required min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="remarks">Remarks</label>
+                        <input type="text" id="remarks" placeholder="Add any additional notes here">
+                    </div>
+                    <button type="submit">Add Entry</button>
+                </form>
+            </div>
+
+            <div class="dashboard-stats">
+                <h2>Dashboard Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Amount</h3>
+                        <p id="totalAmount">₹0.00</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>CO Entries</h3>
+                        <p id="coCount">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>NON-CO Entries</h3>
+                        <p id="nonCoCount">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total CO CFT</h3>
+                        <p id="coCft">0.00</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total NON-CO CFT</h3>
+                        <p id="nonCoCft">0.00</p>
+                    </div>
+                </div>
+
+                <div class="entries-table">
+                    <h3>Recent Entries</h3>
+                    <table id="entriesTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Vehicle Number</th>
+                                <th>CFT</th>
+                                <th>Status</th>
+                                <th>Amount</th>
+                                <th>Remarks</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="entriesTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="entries-table deleted-entries">
+                    <h3>Deleted Entries</h3>
+                    <table id="deletedEntriesTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Vehicle Number</th>
+                                <th>CFT</th>
+                                <th>Status</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deletedEntriesBody"></tbody>
+                    </table>
+                </div>
+
+                <button onclick="generatePDF()" class="export-btn">Export to PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
